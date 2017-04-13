@@ -39,6 +39,7 @@ clang -ggdb3 -O0 -std=c11 -Wall -Werror vigenere.c -lcs50 -lm -o vigenere
 
 bool containsOnlyLetters(string s);
 int* convertToNumbers(string s);
+string encrypt(string p, int* k);
 
 int main(int argc, string argv[]) {
   // Make sure the correct number of arguments were supplied.
@@ -51,7 +52,7 @@ int main(int argc, string argv[]) {
 
   // Check to see if the command line argument contains any non-alpha chars.
   if (!containsOnlyLetters(k)) {
-    printf("Error: Argument must only contain letters.\n");
+    printf("Error: Argument must contain only letters.\n");
     return 1;
   }
 
@@ -59,14 +60,19 @@ int main(int argc, string argv[]) {
   int* key = convertToNumbers(k);
 
   // TESTING ONLY: Print key
-  for (int i = 0, n = strlen(k); i < n; i++) {
-    printf("%i", key[i]);
-  }
-  printf("\n");
+  // printf("Key: ");
+  // for (int i = 0, n = strlen(k); i < n; i++) {
+  //   printf("%i", key[i]);
+  // }
+  // printf("\n");
 
   printf("Enter a string of plaintext: ");
   string p = GetString();
-  printf("%s\n", p);
+  // printf("Plaintext: %s\n", p);
+
+  string cipher = encrypt(p, key);
+  printf("%s\n", cipher);
+  
   return 0;
 }
 
@@ -93,7 +99,37 @@ int* convertToNumbers(string s) {
   int* array = malloc(sizeof(int) * strlen(s));
 
   for (int i = 0, n = strlen(s); i < n; i++) {
-    array[i] = i;
+    if (s[i] >= 'a' && s[i] <= 'z') {
+      array[i] = s[i] - 97;
+    } else {
+      array[i] = s[i] - 65;
+    }
   }
   return array;
+}
+
+string encrypt(string p, int* k) {
+  // Use Vigenere's cipher to encrypt string p with key k.
+  string c = p;
+  int counter = 0;
+  int keyLength = sizeof(k) / sizeof(k[0]);
+
+  for (int i = 0, n = strlen(p); i < n; i++) {
+    // Only encrypt if p[i] is a letter.
+    if ((p[i] >= 'a' || p[i] <= 'z') && (p[i] >= 'A' || p[i] <= 'Z')) {
+      c[i] = (char) (p[i] + k[counter]);
+
+      // Counter logic to continuously loop through k.
+      if (counter < keyLength) {
+        counter += 1;
+      } else {
+        counter = 0;
+      }
+    } else {
+      // Otherwise, leave the character unchanged.
+      c[i] = p[i];
+    }
+  }
+
+  return (c);
 }
