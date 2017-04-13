@@ -35,8 +35,65 @@ clang -ggdb3 -O0 -std=c11 -Wall -Werror vigenere.c -lcs50 -lm -o vigenere
 
 #include <cs50.h>
 #include <stdio.h>
+#include <string.h>
 
-int main(int argc, string argv[])
-{
+bool containsOnlyLetters(string s);
+int* convertToNumbers(string s);
 
+int main(int argc, string argv[]) {
+  // Make sure the correct number of arguments were supplied.
+  if (argc < 2 || argc > 2) {
+    printf("Error: Program takes exactly 1 argument.\n");
+    return 1;
+  }
+
+  string k = argv[1];
+
+  // Check to see if the command line argument contains any non-alpha chars.
+  if (!containsOnlyLetters(k)) {
+    printf("Error: Argument must only contain letters.\n");
+    return 1;
+  }
+
+  // If it contains only letters, convert the key to it's numeric equivalent.
+  int* key = convertToNumbers(k);
+
+  // TESTING ONLY: Print key
+  for (int i = 0, n = strlen(k); i < n; i++) {
+    printf("%i", key[i]);
+  }
+  printf("\n");
+
+  printf("Enter a string of plaintext: ");
+  string p = GetString();
+  printf("%s\n", p);
+  return 0;
+}
+
+/* *************************************************************************
+End main. Begin custom function definitions.
+************************************************************************* */
+
+bool containsOnlyLetters(string s) {
+  // Return true if s contains only letters. Otherwise return false.
+  for (int i = 0, n = strlen(s); i < n; i++) {
+    if ((s[i] < 'a' || s[i] > 'z') && (s[i] < 'A' || s[i] > 'Z')) {
+      return false;
+    }
+  }
+  return true;
+}
+
+int* convertToNumbers(string s) {
+  /*
+  Arguments: String of upper and lower case letters
+  Returns: Array of ints corresponding to the letters in s.
+  Ex: A/a = 0, B/b = 2, C/c = 3
+  */
+  int* array = malloc(sizeof(int) * strlen(s));
+
+  for (int i = 0, n = strlen(s); i < n; i++) {
+    array[i] = i;
+  }
+  return array;
 }
