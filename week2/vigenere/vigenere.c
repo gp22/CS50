@@ -59,19 +59,11 @@ int main(int argc, string argv[]) {
   // If it contains only letters, convert the key to it's numeric equivalent.
   int* key = convertToNumbers(k);
 
-  // TESTING ONLY: Print key
-  // printf("Key: ");
-  // for (int i = 0, n = strlen(k); i < n; i++) {
-  //   printf("%i", key[i]);
-  // }
-  // printf("\n");
-
-  printf("Enter a string of plaintext: ");
+  printf("plaintext: ");
   string p = GetString();
-  // printf("Plaintext: %s\n", p);
 
   string cipher = encrypt(p, key, strlen(k));
-  printf("%s\n", cipher);
+  printf("ciphertext: %s\n", cipher);
   
   return 0;
 }
@@ -116,7 +108,6 @@ string encrypt(string p, int* k, int keyLength) {
   */
   string c = p;
   int counter = 0;
-  printf("keyLength: %i\n", keyLength);
 
   for (int i = 0, n = strlen(p); i < n; i++) {
     if (p[i] >= 'a' && p[i] <= 'z') {
