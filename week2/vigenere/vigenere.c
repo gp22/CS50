@@ -39,7 +39,7 @@ clang -ggdb3 -O0 -std=c11 -Wall -Werror vigenere.c -lcs50 -lm -o vigenere
 
 bool containsOnlyLetters(string s);
 int* convertToNumbers(string s);
-string encrypt(string p, int* k);
+string encrypt(string p, int* k, int keyLength);
 
 int main(int argc, string argv[]) {
   // Make sure the correct number of arguments were supplied.
@@ -70,7 +70,7 @@ int main(int argc, string argv[]) {
   string p = GetString();
   // printf("Plaintext: %s\n", p);
 
-  string cipher = encrypt(p, key);
+  string cipher = encrypt(p, key, strlen(k));
   printf("%s\n", cipher);
   
   return 0;
@@ -81,7 +81,9 @@ End main. Begin custom function definitions.
 ************************************************************************* */
 
 bool containsOnlyLetters(string s) {
-  // Return true if s contains only letters. Otherwise return false.
+  /*
+  Return true if s contains only letters. Otherwise return false.
+  */
   for (int i = 0, n = strlen(s); i < n; i++) {
     if ((s[i] < 'a' || s[i] > 'z') && (s[i] < 'A' || s[i] > 'Z')) {
       return false;
@@ -108,25 +110,51 @@ int* convertToNumbers(string s) {
   return array;
 }
 
-string encrypt(string p, int* k) {
-  // Use Vigenere's cipher to encrypt string p with key k.
+string encrypt(string p, int* k, int keyLength) {
+  /*
+  Use Vigenere's cipher to encrypt string p with key k.
+  */
   string c = p;
   int counter = 0;
-  int keyLength = sizeof(k) / sizeof(k[0]);
+  printf("keyLength: %i\n", keyLength);
 
   for (int i = 0, n = strlen(p); i < n; i++) {
-    // Only encrypt if p[i] is a letter.
-    if ((p[i] >= 'a' || p[i] <= 'z') && (p[i] >= 'A' || p[i] <= 'Z')) {
-      c[i] = (char) (p[i] + k[counter]);
+    if (p[i] >= 'a' && p[i] <= 'z') {
+      /*
+      If p[i] is a lowercase letter, encrypt it,
+      and modify the counter to loop through key k.
+      */
+      if ( ((int) p[i] + k[counter]) > 122 ) {
+        c[i] = (char) ( (p[i] + k[counter]) - 26 );
+      } else {
+        c[i] = (char) (p[i] + k[counter]);
+      }
 
-      // Counter logic to continuously loop through k.
-      if (counter < keyLength) {
+      // Counter logic for looping through key k.
+      if (counter < keyLength - 1) {
+        counter += 1;
+      } else {
+        counter = 0;
+      }
+    } else if (p[i] >= 'A' && p[i] <= 'Z') {
+      /*
+      Or if p[i] is an uppercase letter, encrypt it,
+      and modify the counter to loop through key k.
+      */
+      if ( ((int) p[i] + k[counter]) > 90 ) {
+        c[i] = (char) ( (p[i] + k[counter]) - 26 );
+      } else {
+        c[i] = (char) (p[i] + k[counter]);
+      }
+
+      // Counter logic for looping through key k.
+      if (counter < keyLength - 1) {
         counter += 1;
       } else {
         counter = 0;
       }
     } else {
-      // Otherwise, leave the character unchanged.
+      // Otherwise, leave p[i] unchanged.
       c[i] = p[i];
     }
   }
