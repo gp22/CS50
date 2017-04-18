@@ -14,6 +14,18 @@
 bool search(int value, int values[], int n)
 {
     // TODO: implement a searching algorithm
+    if (value < 0)
+    {
+        return false;
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        if (values[i] == value)
+        {
+            return true;
+        }
+    }
     return false;
 }
 
@@ -23,5 +35,17 @@ bool search(int value, int values[], int n)
 void sort(int values[], int n)
 {
     // TODO: implement an O(n^2) sorting algorithm
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n-1; j++)
+        {
+            if (values[j] > values[j+1])
+            {
+                int temp = values[j];
+                values[j] = values[j+1];
+                values[j+1] = temp;
+            }
+        }
+    }
     return;
 }
