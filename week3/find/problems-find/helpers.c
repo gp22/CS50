@@ -5,6 +5,7 @@
  */
  
 #include <cs50.h>
+#include <stdio.h>
 
 #include "helpers.h"
 
@@ -13,19 +14,49 @@
  */
 bool search(int value, int values[], int n)
 {
-    // TODO: implement a searching algorithm
+    // Immediately return false if value is less than 0.
     if (value < 0)
     {
         return false;
     }
 
-    for (int i = 0; i < n; i++)
-    {
-        if (values[i] == value)
+    // TODO: implement a searching algorithm
+    // for (int i = 0; i < n; i++)
+    // {
+    //     if (values[i] == value)
+    //     {
+    //         return true;
+    //     }
+    // }
+
+    int min = 0;
+    int max = n;
+    int guess = n/2;    
+    // printf("%i\n", n/2);
+
+    do {
+        if (value == guess)
         {
-            return true;
+            return true;    
         }
-    }
+        else if (value > guess)
+        {
+            printf("%i not equal to %i\n", value, guess);
+            printf("min: %i, max: %i\n\n", min, max);
+            
+            min = guess + 1;
+            guess = (min + max) / 2;
+        }
+        else // value < guess
+        {
+            printf("%i not equal to %i\n", value, guess);
+            printf("min: %i, max: %i\n\n", min, max);
+
+            max = guess - 1;
+            guess = (min + max) / 2;
+        }
+    } while (value != guess);
+
     return false;
 }
 
