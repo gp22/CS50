@@ -30,16 +30,12 @@ bool search(int value, int values[], int n)
     int guess = values[guessIndex];
 
     do {
-        printf("min: %i, max: %i, guess: %i\n", min, max, guess);
-        printf("minIndex: %i, maxIndex: %i, guessIndex: %i\n\n", minIndex, maxIndex, guessIndex);
         if (value == guess || value == min || value == max)
         {
             return true;    
         }
         else if (value > guess)
         {
-            printf("%i not equal to %i, %i or %i\n", value, min, guess, max);
-            
             minIndex = guessIndex + 1;
             min = values[minIndex];
 
@@ -48,24 +44,14 @@ bool search(int value, int values[], int n)
         }
         else // value < guess
         {
-            printf("%i not equal to %i, %i or %i\n", value, min, guess, max);
-
             maxIndex = guessIndex - 1;
             max = values[maxIndex];
 
             guessIndex = (minIndex + maxIndex) / 2;
             guess = values[guessIndex];
         }
-    // } while (value != guess && (maxIndex + 1) - (minIndex + 1) != 0);
-    } while (value != guess);
-    printf("min: %i, max: %i, guess: %i\n", min, max, guess);
-    printf("minIndex: %i, maxIndex: %i, guessIndex: %i\n\n", minIndex, maxIndex, guessIndex);
+    } while (maxIndex - guessIndex > 0);
 
-    if (value == guess || value == min || value == max)
-    {
-        return true;    
-    }
-    
     return false;
 }
 
