@@ -33,7 +33,7 @@ int d;
 void clear(void);
 void greet(void);
 void init(int d);
-void draw(void);
+void draw(int d);
 bool move(int tile);
 bool won(void);
 
@@ -75,7 +75,7 @@ int main(int argc, string argv[])
         clear();
 
         // draw the current state of the board
-        draw();
+        draw(d);
 
         // log the current state of the board (for testing)
         for (int i = 0; i < d; i++)
@@ -207,9 +207,32 @@ void init(int d)
 /**
  * Prints the board in its current state.
  */
-void draw(void)
+void draw(int d)
 {
     // TODO
+    for (int i = 0; i < d; i++)
+    {
+        for (int j = 0; j < d; j++)
+        if (board[i][j] > 9)
+        {
+            if (j == d - 1)
+            {
+                printf("%i\n\n", board[i][j]);
+            }
+            else
+            {
+                printf("%i", board[i][j]);
+            }
+        }
+        else if (j == d - 1)
+        {
+            printf("%i\n\n", board[i][j]);
+        }
+        else
+        {
+            printf("%i", board[i][j]);
+        }
+    }
 }
 
 /**
