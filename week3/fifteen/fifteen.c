@@ -32,7 +32,7 @@ int d;
 // prototypes
 void clear(void);
 void greet(void);
-void init(void);
+void init(int d);
 void draw(void);
 bool move(int tile);
 bool won(void);
@@ -66,7 +66,7 @@ int main(int argc, string argv[])
     greet();
 
     // initialize the board
-    init();
+    init(d);
 
     // accept moves until game is won
     while (true)
@@ -101,7 +101,7 @@ int main(int argc, string argv[])
 
         // prompt for move
         printf("Tile to move: ");
-        int tile = get_int();
+        int tile = GetInt();
         
         // quit if user inputs 0 (for testing)
         if (tile == 0)
@@ -154,9 +154,54 @@ void greet(void)
  * Initializes the game's board with tiles numbered 1 through d*d - 1
  * (i.e., fills 2D array with values but does not actually print them).  
  */
-void init(void)
+void init(int d)
 {
     // TODO
+    int max = (d * d) - 1;
+    bool odd;
+
+    if (d % 2 == 0)
+    {
+        odd = true;
+        printf("odd\n");
+    }
+    else
+    {
+        odd = false;
+        printf("even\n");
+    }
+
+    for (int i = 0; i < d; i++)
+    {
+        for (int j = 0; j < d; j++)
+        {
+            if (odd)
+            // If there is an odd number of tiles, swap 1 and 2
+            {
+                if (max == 2)
+                {
+                    board[i][j] = 1;
+                    max -= 1;
+                }
+                else if (max == 1)
+                {
+                    board[i][j] = 2;
+                    max -= 1;
+                }
+                else
+                {
+                    board[i][j] = max;
+                    max -= 1;
+                }
+            }
+            else
+            // Otherwise leave 1 and 2 in order
+            {
+                board[i][j] = max;
+                max -= 1;
+            }
+        }
+    }
 }
 
 /**
