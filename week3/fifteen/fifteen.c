@@ -35,7 +35,7 @@ void greet(void);
 void init(int d);
 void draw(int d);
 bool move(int tile);
-bool won(void);
+bool won(int d);
 
 int main(int argc, string argv[])
 {
@@ -93,7 +93,7 @@ int main(int argc, string argv[])
         fflush(file);
 
         // check for win
-        if (won())
+        if (won(d))
         {
             printf("ftw!\n");
             break;
@@ -249,8 +249,29 @@ bool move(int tile)
  * Returns true if game is won (i.e., board is in winning configuration), 
  * else false.
  */
-bool won(void)
+bool won(int d)
 {
     // TODO
-    return false;
+    for (int i = 0; i < d; i++)
+    {
+        for (int j = 0; j < d; j++)
+        {
+            if (i == d-1 && j == d-2)
+            {
+                break;
+            }
+            else if (j == d-1)
+            {
+                if (board[i+1][0] - board[i][j] != 1)
+                {
+                    return false;
+                }
+            }
+            else if (board[i][j+1] - board[i][j] != 1)
+            {
+                return false;
+            }
+        }
+    }
+    return true;
 }
