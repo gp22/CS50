@@ -35,7 +35,7 @@ void greet(void);
 void init(int d);
 void draw(int d);
 void printChar(int d);
-bool move(int tile);
+bool move(int tile, int d);
 bool won(int d);
 
 int main(int argc, string argv[]) {
@@ -105,7 +105,7 @@ int main(int argc, string argv[]) {
     fflush(file);
 
     // move if possible, else report illegality
-    if (!move(tile)) {
+    if (!move(tile, d)) {
       printf("\nIllegal move.\n");
       usleep(500000);
     }
@@ -216,8 +216,29 @@ void printChar(int d) {
  * If tile borders empty space, moves tile and returns true, else
  * returns false.
  */
-bool move(int tile) {
+bool move(int tile, int d) {
   // TODO
+  int x, y;
+  for (int i = 0; i < d; i++) {
+    for (int j = 0; j < d; j++) {
+      if (board[i][j] == tile) {
+        x = j;
+        y = i;
+      }
+    }
+  }
+
+  if (board[y + 1][x] == 0) {
+    board[y][x] = 0;
+    board[y + 1][x] = tile;
+    // printf("0 is at board[%d][%d]", y + 1, x);
+    return true;
+  } else if (board[y - 1][x] == 0) {
+    board[y][x] = 0;
+    board[y - 1][x] = tile;
+    return true;
+  }
+
   return false;
 }
 
