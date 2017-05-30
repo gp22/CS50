@@ -34,6 +34,7 @@ void clear(void);
 void greet(void);
 void init(int d);
 void draw(int d);
+void printChar(int d);
 bool move(int tile);
 bool won(int d);
 
@@ -184,14 +185,16 @@ void draw(int d) {
     for (int j = 0; j < d; j++)
     if (board[i][j] > 9) {
       if (j == d - 1) {
-        printf("%i\n\n", board[i][j]);
+        printChar(board[i][j]);
+        printf("\n\n");
       } else {
-        printf("%i", board[i][j]);
+        printChar(board[i][j]);
       }
     } else if (j == d - 1) {
-      printf("%i\n\n", board[i][j]);
+      printChar(board[i][j]);
+      printf("\n\n");
     } else {
-      printf("%i", board[i][j]);
+      printChar(board[i][j]);
     }
   }
 }
@@ -199,7 +202,11 @@ void draw(int d) {
 // Help with proper grid formatting.
 void printChar(int d) {
   if (d < 10) {
-    printf("  %i", d);
+    if (d == 0) {
+      printf("  _");
+    } else {
+      printf("  %i", d);
+    }
   } else {
     printf(" %i", d);
   }
